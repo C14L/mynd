@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>newsdiffs</title>
+    <style>
+        form { display: inline-block; }
+    </style>
+</head>
+<body>
+    <h1>Home</h1>
+    <p><a href="/add/">Add URL</a></p>
+    {% for url in urls %}
+    <p>
+        <form action="/del/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="pk" value="{{ url.pk }}">
+            <input type="submit" value="delete">
+        </form>
+        <a href="{{ url.url }}">{{ url.url }}</a>
+        <span>
+            <span>last updated:</span>
+            <span>{{ url.last_parsed_on|date:"Y-m-d H:i:s" }}</span>
+        </span>
+    </p>
+    {% endfor %}
+</body>
+</html>
