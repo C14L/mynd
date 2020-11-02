@@ -17,6 +17,9 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--url", type=str, default="", help="URL to poll.")
         parser.add_argument(
+            "--all", action="store_true", help="Poll and parse all URLs."
+        )
+        parser.add_argument(
             "--nopoll", action="store_true", help="Do not poll this URL now."
         )
         parser.add_argument(
@@ -28,6 +31,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         url = kwargs["url"]
+        all_urls = kwargs["all"]
         nopoll = kwargs["nopoll"]
         noparse = kwargs["noparse"]
         force = kwargs["force"]
@@ -39,20 +43,24 @@ class Command(BaseCommand):
                 log.debug("New URL was added to PageUrl table.")
             else:
                 log.debug("Known URL loaded from PageUrl table.")
+            page_urls = [page_url]
         else:
-            query = PageUrl.objects.filter(is_active=True)
-            query = query.order_by("-last_polled_on")[:1]
-            page_url = query[0]
-        log.debug("URL %s", page_url.url)
+            query = PageUrl.objects.filter(is_active=True).order_by("-last_polled_on")
+            if not all_urls:
+                query = query[:1]
+            page_urls = query
 
-        html = ndutils.fetch(page_url.url)
-        log.debug("Fetched %d Bytes of HTML.", len(html))
-        page_text = PageText(url=page_url.url, html=html)
-        page_url.last_polled_on = ndutils.now()
+        for page_url in page_urls:
+            log.debug("URL %s", page_url.url)
 
-        page_text.text = ndparsers.get_parser(page_url.url)(page_text.html)
-        page_url.last_parsed_on = ndutils.now()
-        log.debug("Parsed into %d Bytes of text.", len(page_text.text))
+            html = ndutils.fetch(page_url.url)
+            log.debug("Fetched %d Bytes of HTML.", len(html))
+            page_text = PageText(url=page_url, html=html)
+            page_url.last_polled_on = ndutils.now()
 
-        page_text.save()
-        page_url.save()
+            page_text.text = ndparsers.get_parser(page_url.url)(page_text.html)
+            page_url.last_parsed_on = ndutils.now()
+            log.debug("Parsed into %d Bytes of text.", len(page_text.text))
+
+            page_text.save()
+            page_url.save()

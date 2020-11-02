@@ -2,6 +2,8 @@ import hashlib
 
 from django.db import models
 
+from main import ndutils
+
 
 class PageUrl(models.Model):
     url = models.URLField(null=False, blank=False)
@@ -12,6 +14,10 @@ class PageUrl(models.Model):
     last_change_on = models.DateTimeField(null=True)  # last text change detected
     last_error_on = models.DateTimeField(null=True)
     last_error_description = models.CharField(max_length=100, default="")
+
+    @property
+    def count_texts(self):
+        return self.texts.count()
 
     def __str__(self):
         return self.url
@@ -30,8 +36,8 @@ class PageText(models.Model):
     is_text_changed = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs):
-        self.html_hashed = hashlib.md5(self.html.encode()).hexdigest()
-        self.text_hashed = hashlib.md5(self.html.encode()).hexdigest()
+        self.html_hashed = ndutils.get_hash(self.html)
+        self.text_hashed = ndutils.get_hash(self.text)
         return super().save(*args, **kwargs)
 
     def __str__(self):

@@ -18,11 +18,10 @@
             <input type="hidden" name="pk" value="{{ url.pk }}">
             <input type="submit" value="delete">
         </form>
-        <a href="{{ url.url }}">{{ url.url }}</a>
-        <span>
-            <span>last updated:</span>
-            <span>{{ url.last_parsed_on|date:"Y-m-d H:i:s" }}</span>
-        </span>
+        {{ url.url }}
+        <a href="{{ url.url }}">source</a>,
+        <a href="/view/?url={{ url.url }}">{{ url.count_texts }} versions</a>,
+        <span>last updated: {{ url.last_parsed_on|date:"Y-m-d H:i:s" }}</span>
     </p>
     {% endfor %}
 </body>

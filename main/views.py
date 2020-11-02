@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from .forms import AddUrlForm
 from .models import PageUrl
@@ -9,6 +9,11 @@ def home(request, tpl="main/home.html"):
     urls = PageUrl.objects.all()[:10]
 
     return render(request, tpl, {"urls": urls})
+
+
+def view(request, tpl="main/view.html"):
+    page_url = get_object_or_404(PageUrl, url=request.GET.get("url"))
+    return render(request, tpl, {"texts": page_url.texts.order_by("-created_on").all()})
 
 
 def delete(request, tpl="main/del.html"):
