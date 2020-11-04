@@ -12,9 +12,9 @@
     <h1>View</h1>
     {% for text in texts %}
     <p>
-        <span>{{ text.html_hashed }}</span> /
-        <span>{{ text.text_hashed }}</span> /
-        <span>{{ text.created_on|date:"Y-m-d H:i:s" }}</span>
+        <a href="/diff?v={{ text.text_hashed }}">
+            {{ text.created_on|date:"Y-m-d H:i:s" }}
+        </a>
     </p>
     {% endfor %}
 </body>

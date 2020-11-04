@@ -1,0 +1,49 @@
+{% load mytags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>newsdiffs</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+
+        form { display: inline-block; }
+
+        div.diff {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: row;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        div.diff div {
+            background-color: #fff;
+            flex: 1 1 50%;
+            padding: 16px;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Diff</h1>
+    <div class="diff">
+        <div>
+            <p>{{ text1.text_hashed }}</p>
+            <p>{{ text2.created_on|date:"Y-m-d H:i:s" }}</p>
+        </div>
+        <div>
+            <p>{{ text2.text_hashed }}</p>
+            <p>{{ text1.created_on|date:"Y-m-d H:i:s" }}</p>
+        </div>
+    </div>
+    <div class="diff">
+        <div class="text1">{{ text1.text|render }}</div>
+        <div class="text2">{{ text2.text|render }}</div>
+    </div>
+</body>
+</html>
