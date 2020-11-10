@@ -2,7 +2,7 @@ import hashlib
 
 from django.db import models
 
-from main import ndutils
+from main.ndparsers import ndutils
 
 
 class PageUrl(models.Model):

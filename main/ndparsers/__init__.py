@@ -1,8 +1,4 @@
-from main.ndutils import normspace
-from bs4 import BeautifulSoup
-
-from .. import ndutils
-from . import theguardian_com, tagesschau_de, faz_net
+from . import ndutils, theguardian_com, tagesschau_de, faz_net
 
 log = ndutils.log
 

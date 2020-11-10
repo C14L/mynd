@@ -1,7 +1,5 @@
-from main.ndutils import normspace
 from bs4 import BeautifulSoup
-
-from .. import ndutils
+from . import ndutils
 
 log = ndutils.log
 

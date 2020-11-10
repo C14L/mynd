@@ -1,38 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>newsdiffs</title>
-    <style>
-        body {
-            background-color: #f0f0f0;
-        }
+{% extends "base.html" %}
 
-        h1 a {
-            text-decoration: inherit;
-            color: inherit;
-        }
+{% block title %}newsdiffs{% endblock %}
 
-        form {
-            display: inline-block;
-        }
+{% block head %}
+<style>
+    body {
+        background-color: #f0f0f0;
+    }
 
-        table tr {
-            margin: 0;
-        }
+    h1 a {
+        text-decoration: inherit;
+        color: inherit;
+    }
 
-        table td {
-            background-color: white;
-            padding: 0.5rem;
-            margin: 0;
-        }
+    form {
+        display: inline-block;
+    }
 
-    </style>
-</head>
-<body>
-    <h1><a href="/">View</a></h1>
-    <table>
+    table tr {
+        margin: 0;
+    }
+
+    table td {
+        background-color: white;
+        padding: 0.5rem;
+        margin: 0;
+    }
+</style>
+{% endblock %}
+
+{% block h1 %}<a href="/">View</a>{% endblock %}
+
+{% block content %}
+<table>
     {% for text in texts %}
     <tr>
         <td>
@@ -55,6 +55,5 @@
         </td>
     </tr>
     {% endfor %}
-    </table>
-</body>
-</html>
+</table>
+{% endblock %}

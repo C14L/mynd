@@ -6,7 +6,7 @@ from django.db.models.query_utils import Q
 from time import sleep
 
 from main import ndparsers
-from main import ndutils
+from main.ndparsers import ndutils
 from main.models import PageUrl, PageText
 
 log = ndutils.log

@@ -1,45 +1,44 @@
+{% extends "base.html" %}
 {% load mytags %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>newsdiffs</title>
-    <style>
-        body { background-color: #f0f0f0; }
-        h1 a { text-decoration: inherit; color: inherit; }
-        form { display: inline-block; }
+{% block title %}newsdiffs{% endblock %}
 
-        div.url {
-            background-color: #fff;
-            padding: 1rem;
-            margin-bottom: 0.5rem;
-        }
+{% block head %}
+<style>
+    form {
+        display: inline-block;
+    }
 
-        div.diff {
-            display: flex;
-            flex-wrap: nowrap;
-            flex-direction: row;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
+    div.url {
+        background-color: #fff;
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+    }
 
-        div.diff div {
-            background-color: #fff;
-            flex: 1 1 50%;
-            padding: 1rem;
-        }
+    div.diff {
+        display: flex;
+        flex-wrap: nowrap;
+        flex-direction: row;
+        gap: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
 
-        .uneq {
-            background-color: yellowgreen;
-        }
+    div.diff div {
+        background-color: #fff;
+        flex: 1 1 50%;
+        padding: 1rem;
+    }
 
-    </style>
-</head>
-<body>
-    <h1><a href="/view/?url={{ text2.url }}">Diff</a></h1>
-    <div class="url">
+    .uneq {
+        background-color: yellowgreen;
+    }
+</style>
+{% endblock %}
+
+{% block h1 %}<a href="/view/?url={{ text2.url }}">Diff</a>{% endblock %}
+
+{% block content %}
+<div class="url">
         <a href="{{ text2.url }}">{{ text2.url }}</a>
     </div>
     <div class="diff">
@@ -54,9 +53,10 @@
         <div>
             <p>
                 <span>Newer: </span>
-                <span{% ifequal text1.text_hashed text2.text_hashed %}{% else %} class="uneq"{% endifequal %}>{{ text2.text_hashed }}</span>
-                <span> fetched on </span>
-                <span>{{ text2.created_on|date:"Y-m-d H:i:s" }}</span>
+                <span{% ifequal text1.text_hashed text2.text_hashed %}{% else %} class="uneq" {% endifequal %}>
+                    {{ text2.text_hashed }}</span>
+                    <span> fetched on </span>
+                    <span>{{ text2.created_on|date:"Y-m-d H:i:s" }}</span>
             </p>
         </div>
     </div>
@@ -64,5 +64,4 @@
         <div class="text1">{{ text1.text|render }}</div>
         <div class="text2">{{ text2.text|render }}</div>
     </div>
-</body>
-</html>
+{% endblock %}

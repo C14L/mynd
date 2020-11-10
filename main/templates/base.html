@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}newsdiffs{% endblock %}</title>
+    <style>
+
+body {
+    background-color: #f0f0f0;
+}
+
+header {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+header h1 {
+    vertical-align: middle;
+    flex: 0 0 auto;
+}
+
+header p {
+    vertical-align: middle;
+    color: darkgray;
+    font-style: italic;
+    flex: 1 1 auto;
+}
+
+header div.auth {
+    vertical-align: middle;
+    flex: 0 0 auto;
+}
+
+header a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>{% block h1 %}Newsdiffs{% endblock %}</h1>
+        <p>find text changes in newspaper articles</p>
+        <div class="auth"><a href="/login">login</a></div>
+    </header>
+    {% block content %}{% endblock %}
+</body>
+</html>
