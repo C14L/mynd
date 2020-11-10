@@ -5,17 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>newsdiffs</title>
     <style>
-        form { display: inline-block; }
+        body {
+            background-color: #f0f0f0;
+        }
+
+        h1 a {
+            text-decoration: inherit;
+            color: inherit;
+        }
+
+        form {
+            display: inline-block;
+        }
+
+        table tr {
+            margin: 0;
+        }
+
+        table td {
+            background-color: white;
+            padding: 0.5rem;
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
-    <h1>View</h1>
+    <h1><a href="/">View</a></h1>
+    <table>
     {% for text in texts %}
-    <p>
-        <a href="/diff?v={{ text.text_hashed }}">
-            {{ text.created_on|date:"Y-m-d H:i:s" }}
-        </a>
-    </p>
+    <tr>
+        <td>
+            <a href="/diff?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
+                {{ text.prev_created_on|date:"Y-m-d H:i:s" }}
+            </a>
+        </td>
+        <td>
+            ↷
+        </td>
+        <td>
+            <a href="/diff?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
+                {{ text.created_on|date:"Y-m-d H:i:s" }}
+            </a>
+        </td>
+        <td>
+            {% ifequal text.text_hashed text.prev_text_hashed %}
+            <span>no change</span>{% else %}<span>different</span>
+            {% endifequal %}
+        </td>
+    </tr>
     {% endfor %}
+    </table>
 </body>
 </html>

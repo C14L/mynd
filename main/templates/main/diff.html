@@ -7,38 +7,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>newsdiffs</title>
     <style>
-        body {
-            background-color: #f0f0f0;
-        }
-
+        body { background-color: #f0f0f0; }
+        h1 a { text-decoration: inherit; color: inherit; }
         form { display: inline-block; }
+
+        div.url {
+            background-color: #fff;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
         div.diff {
             display: flex;
             flex-wrap: nowrap;
             flex-direction: row;
-            gap: 16px;
-            margin-bottom: 16px;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
         }
 
         div.diff div {
             background-color: #fff;
             flex: 1 1 50%;
-            padding: 16px;
+            padding: 1rem;
+        }
+
+        .uneq {
+            background-color: yellowgreen;
         }
 
     </style>
 </head>
 <body>
-    <h1>Diff</h1>
+    <h1><a href="/view/?url={{ text2.url }}">Diff</a></h1>
+    <div class="url">
+        <a href="{{ text2.url }}">{{ text2.url }}</a>
+    </div>
     <div class="diff">
         <div>
-            <p>{{ text1.text_hashed }}</p>
-            <p>{{ text2.created_on|date:"Y-m-d H:i:s" }}</p>
+            <p>
+                <span>Older:</span>
+                <span>{{ text1.text_hashed }}</span>
+                <span> fetched on </span>
+                <span>{{ text1.created_on|date:"Y-m-d H:i:s" }}</span>
+            </p>
         </div>
         <div>
-            <p>{{ text2.text_hashed }}</p>
-            <p>{{ text1.created_on|date:"Y-m-d H:i:s" }}</p>
+            <p>
+                <span>Newer: </span>
+                <span{% ifequal text1.text_hashed text2.text_hashed %}{% else %} class="uneq"{% endifequal %}>{{ text2.text_hashed }}</span>
+                <span> fetched on </span>
+                <span>{{ text2.created_on|date:"Y-m-d H:i:s" }}</span>
+            </p>
         </div>
     </div>
     <div class="diff">

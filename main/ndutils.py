@@ -4,7 +4,7 @@ import logging
 import requests
 import sys
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logging.StreamHandler(sys.stdout)
 log = logging.getLogger(__name__)
 
@@ -32,3 +32,20 @@ def get_hash(s):
 
 def now():
     return datetime.datetime.now(datetime.timezone.utc)
+
+
+def normspace(t):
+    """Normalize or remove redundant whitespace, tabs, etc anywhere in text."""
+    # TODO: remove more stuff
+    def do(x):
+        if x:
+            return " ".join(x.strip().split())
+
+    if isinstance(t, str):
+        return do(t)
+
+    res = [do(x) for x in t]
+    res = [x for x in res if x]
+    res = "\n\n".join(res)
+
+    return res

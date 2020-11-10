@@ -1,28 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>newsdiffs</title>
     <style>
-        form { display: inline-block; }
+        body {
+            background-color: #f0f0f0;
+        }
+
+        h1 a {
+            text-decoration: inherit;
+            color: inherit;
+        }
+
+        .add-form {
+            background-color: white;
+            padding: 0.25rem;
+        }
+
+        .add-form label {
+            display: none;
+        }
+
+        .add-form input[type="url"] {
+            padding: 0.25rem 0.5rem;
+            font-size: 1rem;
+            min-width: 10rem;
+            width: 50rem;
+        }
+
+        .url-list form {
+            display: inline-block;
+        }
+
+        .url-list table {
+            width: 100%;
+        }
+
+        .url-list table tr {
+            margin: 0;
+        }
+
+        .url-list table td {
+            background-color: white;
+            padding: 0.5rem;
+            margin: 0;
+            white-space: nowrap;
+        }
+        .url-list table td.url {
+            width: 100%;
+        }
+        .url-list table td.url div {
+            overflow: hidden;
+        }
+
+        .url-list table tr:first-child td:nth-child(3),
+        .url-list table tr:first-child td:nth-child(4),
+        .url-list table tr:first-child td:nth-child(5),
+        .url-list table tr:first-child td:nth-child(6) {
+            background-color: transparent;
+            color: darkgrey;
+            text-align: center;
+        }
+
     </style>
 </head>
+
 <body>
-    <h1>Home</h1>
-    <p><a href="/add/">Add URL</a></p>
-    {% for url in urls %}
-    <p>
-        <form action="/del/" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="pk" value="{{ url.pk }}">
-            <input type="submit" value="delete">
-        </form>
-        {{ url.url }}
-        <a href="{{ url.url }}">source</a>,
-        <a href="/view/?url={{ url.url }}">{{ url.count_texts }} versions</a>,
-        <span>last updated: {{ url.last_parsed_on|date:"Y-m-d H:i:s" }}</span>
-    </p>
-    {% endfor %}
+    <h1>Newsdiffs</h1>
+    <div class="url-list">
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <form class="add-form" action="/add/" method="post">
+                        {% csrf_token %}
+                        <span>
+                            <input type="url" name="url" maxlength="1000">
+                            <input type="submit" value="Submit">
+                        </span>
+                    </form>
+                </td>
+                <td></td>
+                <td>first added</td>
+                <td>last updated</td>
+                <td>link</td>
+            </tr>
+
+            {% for url in urls %}
+            <tr>
+                <td>
+                    <form action="/del/" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="pk" value="{{ url.pk }}">
+                        <input type="submit" value="delete">
+                    </form>
+                </td>
+                <td class="url">
+                    <div>{{ url.title }}</div>
+                </td>
+                <td>
+                    <a href="/view/?url={{ url.url }}">
+                        {{ url.count_different_texts }}
+                        different of
+                        {{ url.count_texts }}</a>
+                </td>
+                <td>
+                    <span>{{ url.created_on|date:"Y-m-d H:i:s" }}</span>
+                </td>
+                <td>
+                    <span>{{ url.last_parsed_on|date:"Y-m-d H:i:s" }}</span>
+                </td>
+                <td><a href="{{ url.url }}">source</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
+
 </html>
