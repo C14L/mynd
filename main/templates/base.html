@@ -17,11 +17,13 @@ header {
     flex-direction: row;
     align-items: center;
     gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 header h1 {
     vertical-align: middle;
     flex: 0 0 auto;
+    margin: 0;
 }
 
 header p {
@@ -29,11 +31,14 @@ header p {
     color: darkgray;
     font-style: italic;
     flex: 1 1 auto;
+    margin: 0;
 }
 
 header div.auth {
-    vertical-align: middle;
     flex: 0 0 auto;
+    padding: 0.125rem 0.25rem;
+    border: 1px solid grey;
+    border-radius: 0.125rem;
 }
 
 header a {
@@ -46,9 +51,13 @@ header a {
 </head>
 <body>
     <header>
-        <h1>{% block h1 %}Newsdiffs{% endblock %}</h1>
+        <h1>{% block h1 %}<a href="/">Newsdiffs</a>{% endblock %}</h1>
         <p>find text changes in newspaper articles</p>
-        <div class="auth"><a href="/login">login</a></div>
+        {% if user.is_authenticated %}
+        <div class="auth"><a href="{% url 'logout' %}">logout</a></div>
+        {% else %}
+        <div class="auth"><a href="{% url 'login' %}">login</a></div>
+        {% endif %}
     </header>
     {% block content %}{% endblock %}
 </body>

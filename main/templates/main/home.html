@@ -44,7 +44,8 @@
         width: 100%;
     }
 
-    .url-list table tr td:nth-child(2) {
+    .url-list table tr td:nth-child(2),
+    .url-list table tr td:nth-child(3) {
         text-align: left;
     }
 
@@ -57,7 +58,7 @@
 
 {% endblock %}
 
-{% block h1 %}Newsdiffs{% endblock %}
+{% block h1 %}<a href="/">Newsdiffs</a>{% endblock %}
 
 {% block content %}
 
@@ -65,7 +66,7 @@
     <table>
         <tr>
             <td></td>
-            <td>
+            <td colspan="2">
                 <form class="add-form" action="/add/" method="post">
                     {% csrf_token %}
                     <span>
@@ -90,6 +91,7 @@
                     <input type="submit" value="delete">
                 </form>
             </td>
+            <td>{{ url.hostname }}</td>
             <td class="url"><a href="/view/?url={{ url.url }}">{{ url.title }}</a></td>
             <td>{{ url.count_texts }}</td>
             <td>{{ url.count_different_texts }}</td>

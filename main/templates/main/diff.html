@@ -25,8 +25,9 @@
 
     div.diff div {
         background-color: #fff;
-        flex: 1 1 50%;
+        flex: 0 1 50%;
         padding: 1rem;
+        overflow: hidden;
     }
 
     .uneq {
@@ -39,29 +40,29 @@
 
 {% block content %}
 <div class="url">
-        <a href="{{ text2.url }}">{{ text2.url }}</a>
+    <a href="{{ text2.url }}">{{ text2.url }}</a>
+</div>
+<div class="diff">
+    <div>
+        <p>
+            <span>Older:</span>
+            <span>{{ text1.text_hashed }}</span>
+            <span> fetched on </span>
+            <span>{{ text1.created_on|date:"Y-m-d H:i:s" }}</span>
+        </p>
     </div>
-    <div class="diff">
-        <div>
-            <p>
-                <span>Older:</span>
-                <span>{{ text1.text_hashed }}</span>
+    <div>
+        <p>
+            <span>Newer: </span>
+            <span{% ifequal text1.text_hashed text2.text_hashed %}{% else %} class="uneq" {% endifequal %}>
+                {{ text2.text_hashed }}</span>
                 <span> fetched on </span>
-                <span>{{ text1.created_on|date:"Y-m-d H:i:s" }}</span>
-            </p>
-        </div>
-        <div>
-            <p>
-                <span>Newer: </span>
-                <span{% ifequal text1.text_hashed text2.text_hashed %}{% else %} class="uneq" {% endifequal %}>
-                    {{ text2.text_hashed }}</span>
-                    <span> fetched on </span>
-                    <span>{{ text2.created_on|date:"Y-m-d H:i:s" }}</span>
-            </p>
-        </div>
+                <span>{{ text2.created_on|date:"Y-m-d H:i:s" }}</span>
+        </p>
     </div>
-    <div class="diff">
-        <div class="text1">{{ text1.text|render }}</div>
-        <div class="text2">{{ text2.text|render }}</div>
-    </div>
+</div>
+<div class="diff">
+    <div class="text1">{{ text1.text|render }}</div>
+    <div class="text2">{{ text2.text|render }}</div>
+</div>
 {% endblock %}

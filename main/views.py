@@ -1,5 +1,6 @@
 import difflib
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
 
@@ -18,10 +19,11 @@ def view(request, tpl="main/view.html"):
     for i, x in enumerate(list(texts)[:-1]):
         setattr(x, "prev_text_hashed", texts[i+1].text_hashed)
         setattr(x, "prev_created_on", texts[i+1].created_on)
-    ctx = {"texts": texts }
+    ctx = {"texts": texts, "url": url }
     return render(request, tpl, ctx)
 
 
+@login_required
 def diff(request, tpl="main/diff.html"):
     t1 = PageText.objects.filter(text_hashed=request.GET.get("1")).first()
     t2 = PageText.objects.filter(text_hashed=request.GET.get("2")).first()
@@ -40,6 +42,7 @@ def diff(request, tpl="main/diff.html"):
     return render(request, tpl, {"text1": t1, "text2": t2})
 
 
+@login_required
 def delete(request, tpl="main/del.html"):
     if request.method == "POST":
         PageUrl.objects.get(pk=request.POST["pk"]).delete()
@@ -47,6 +50,7 @@ def delete(request, tpl="main/del.html"):
     return HttpResponseNotFound()
 
 
+@login_required
 def add(request, tpl="main/add.html"):
     if request.method == "POST":
         form = AddUrlForm(request.POST)

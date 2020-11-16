@@ -1,5 +1,3 @@
-import hashlib
-
 from django.db import models
 
 from main.ndparsers import ndutils
@@ -18,6 +16,17 @@ class PageUrl(models.Model):
     last_error_description = models.CharField(max_length=100, default="")
 
     @property
+    def hostname(self):
+        return (
+            self.url.split("//")[-1]
+            .split("/")[0]
+            .split("?")[0]
+            .split(":")[0]
+            .lower()
+            .replace("www.", "")
+        )
+
+    @property
     def count_texts(self):
         return self.texts.count()
 
@@ -26,7 +35,8 @@ class PageUrl(models.Model):
         return len(set(self.texts.all().values_list("text_hashed", flat=True)))
 
     def save(self, *args, **kwargs):
-        self.title = self.url
+        if not self.title:
+            self.title = self.url
         return super().save(*args, **kwargs)
 
     def __str__(self):
