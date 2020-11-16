@@ -9,7 +9,11 @@ from .models import PageText, PageUrl
 
 
 def home(request, tpl="main/home.html"):
-    urls = PageUrl.objects.order_by("-created_on").all()[:100]
+    q = request.GET.get("q")
+    query = PageUrl.objects
+    if q:
+        query = query.filter(url__contains=str(q))
+    urls = query.order_by("-created_on").all()[:100]
     return render(request, tpl, {"urls": urls, "form": AddUrlForm()})
 
 

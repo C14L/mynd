@@ -40,6 +40,7 @@
         white-space: nowrap;
         text-align: center;
     }
+
     .url-list table td.url {
         width: 100%;
     }
@@ -53,7 +54,6 @@
         background-color: transparent;
         color: darkgrey;
     }
-
 </style>
 
 {% endblock %}
@@ -91,7 +91,7 @@
                     <input type="submit" value="delete">
                 </form>
             </td>
-            <td>{{ url.hostname }}</td>
+            <td><a href="/?q={{ url.hostname }}">{{ url.hostname }}</a></td>
             <td class="url"><a href="/view/?url={{ url.url }}">{{ url.title }}</a></td>
             <td>{{ url.count_texts }}</td>
             <td>{{ url.count_different_texts }}</td>
