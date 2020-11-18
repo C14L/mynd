@@ -61,6 +61,4 @@ def add(request, tpl="main/add.html"):
         if form.is_valid():
             page_url = PageUrl(url=form.cleaned_data["url"])
             page_url.save()
-            return HttpResponseRedirect("/")
-    form = AddUrlForm()
-    return render(request, tpl, {"form": form})
+    return HttpResponseRedirect("/")
