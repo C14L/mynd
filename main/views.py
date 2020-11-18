@@ -1,5 +1,6 @@
 import difflib
 
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
@@ -28,7 +29,7 @@ def view(request, tpl="main/view.html"):
     return render(request, tpl, ctx)
 
 
-@login_required
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def diff(request, tpl="main/diff.html"):
     t1 = PageText.objects.filter(text_hashed=request.GET.get("1")).first()
     t2 = PageText.objects.filter(text_hashed=request.GET.get("2")).first()
@@ -47,7 +48,7 @@ def diff(request, tpl="main/diff.html"):
     return render(request, tpl, {"text1": t1, "text2": t2})
 
 
-@login_required
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def delete(request, tpl="main/del.html"):
     if request.method == "POST":
         PageUrl.objects.get(pk=request.POST["pk"]).delete()
@@ -55,7 +56,7 @@ def delete(request, tpl="main/del.html"):
     return HttpResponseNotFound()
 
 
-@login_required
+@login_required(login_url=settings.LOGIN_REDIRECT_URL)
 def add(request, tpl="main/add.html"):
     if request.method == "POST":
         form = AddUrlForm(request.POST)

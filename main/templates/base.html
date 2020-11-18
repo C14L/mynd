@@ -46,12 +46,17 @@ header a {
     color: inherit;
 }
 
+footer {
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
     </style>
     {% block head %}{% endblock %}
 </head>
 <body>
     <header>
-        <h1>{% block h1 %}<a href="/">Newsdiffs</a>{% endblock %}</h1>
+        <h1>{% block h1 %}<a href="{% url 'home' %}">Newsdiffs</a>{% endblock %}</h1>
         <p>find text changes in newspaper articles</p>
         {% if user.is_authenticated %}
         <div class="auth"><a href="{% url 'logout' %}">logout</a></div>
@@ -60,5 +65,11 @@ header a {
         {% endif %}
     </header>
     {% block content %}{% endblock %}
+
+    <footer>
+        © 2020 &mdash;
+        <a href="https://C14L.com/impressum.html">Impressum, Privacy</a>
+    </footer>
+
 </body>
 </html>
