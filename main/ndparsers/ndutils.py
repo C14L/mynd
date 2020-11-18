@@ -19,11 +19,17 @@ def concat_domain_url(domain, url):
 
 
 def fetch(url):
+    err = None
     req = requests.Session()
     res = req.get(url)
     res.raise_for_status()
+
+    if res.history:
+        if hostname(url) != hostname(res.url):
+            return None, "Redirects to other host: %s" % res.url
+
     content = res.content.decode()
-    return content
+    return content, err
 
 
 def get_hash(s):
@@ -49,3 +55,14 @@ def normspace(t):
     res = "\n\n".join(res)
 
     return res
+
+
+def hostname(url):
+    return (
+        url.split("//")[-1]
+        .split("/")[0]
+        .split("?")[0]
+        .split(":")[0]
+        .lower()
+        .replace("www.", "")
+    )

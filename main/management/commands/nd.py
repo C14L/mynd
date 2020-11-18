@@ -60,17 +60,33 @@ class Command(BaseCommand):
             if not is_dryrun:
                 sleep(TIMEDELTA_BETWEEN_POLLS.seconds)
 
-            html = ndutils.fetch(page_url.url)
+            html, err = ndutils.fetch(page_url.url)
+
+            if err:
+                page_url.last_error_on = datetime.now(timezone.utc)
+                page_url.last_error_description = "Fetch error: %s" % err
+                page_url.save()
+                continue
+
             log.debug("Fetched %d Bytes of HTML.", len(html))
+
             page_text = PageText(url=page_url, html=html)
             page_url.last_polled_on = ndutils.now()
 
-            title, author, content = ndparsers.get_parser(page_url.url)(page_text.html)
+            try:
+                title, author, content = ndparsers.get_parser(page_url.url)(page_text.html)
+            except Exception as exc:
+                page_url.last_error_on = datetime.now(timezone.utc)
+                page_url.last_error_description = \
+                    "Parse error: %s" % getattr(exc, 'message', repr(exc))
+                page_url.save()
+                continue
 
             page_text.text = content
             page_url.title = title
             page_url.author = author
             page_url.last_parsed_on = ndutils.now()
+
             log.debug("Parsed into %d Bytes of text.", len(page_text.text))
 
             if is_dryrun:
