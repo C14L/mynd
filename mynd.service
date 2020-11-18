@@ -1,0 +1,26 @@
+[Unit]
+Description=django mynd service
+Requires=mynd.socket
+After=network.target
+
+[Service]
+PIDFile=/run/mynd.pid
+User=chris
+Group=chris
+RuntimeDirectory=gunicorn
+WorkingDirectory=/opt/mynd
+ExecStart=/home/chris/.virtualenvs/mynd/bin/gunicorn \
+    mynd.wsgi:application \
+    --name mynd \
+    --workers 1 \
+    --threads 4 \
+    --user=chris \
+    --group=chris \
+    --bind=unix:/run/mynd.socket
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

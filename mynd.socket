@@ -1,0 +1,8 @@
+[Unit]
+Description=django mynd socket
+
+[Socket]
+ListenStream=/run/mynd.socket
+
+[Install]
+WantedBy=sockets.target
