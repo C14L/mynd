@@ -7,9 +7,18 @@ log = ndutils.log
 def parse(html: str) -> str:
     text = list()
     soup = BeautifulSoup(html, "html.parser")
-    title = soup.select("title")[0].text.replace(" | tagesschau.de", "")
+
+    try:
+        title = soup.select("title")[0].text.replace(" | tagesschau.de", "")
+    except Exception:
+        title = "No title tag"
+
     author = ""
+
     article = soup.select_one("#content")
+
+    if not article:
+        return title, author, ""
 
     try:
         text.append(article.select("span.dachzeile")[0].text)
@@ -27,8 +36,6 @@ def parse(html: str) -> str:
         pass
 
     for p in article.select(".sectionArticle p"):
-        # if p.has_class("autorenzeile"):
-
         for x in p.select("a"):
             x.append(" [" + x.get("href", "") + "]")
         text.append(p.text)
