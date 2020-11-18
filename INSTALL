@@ -1,0 +1,11 @@
+
+$ server01
+
+server01 $ sudo mkdir /opt/mynd
+
+server01 $ sudo chown $USER:$USER /opt/mynd
+
+server01 $ mkvirtualenv --python=/usr/bin/python3 mynd
+
+server01 $ pip install -r requirements.txt
+

@@ -27,18 +27,18 @@
 </style>
 {% endblock %}
 
-{% block h1 %}<a href="/">View</a>{% endblock %}
+{% block h1 %}<a href="{% url 'home' %}">View</a>{% endblock %}
 
 {% block content %}
 <div class="url">
-    <a href="/?q={{ url.hostname }}">{{ url.hostname }}</a>:
+    <a href="{% url 'home' %}?q={{ url.hostname }}">{{ url.hostname }}</a>:
     <a href="{{ texts.0.url }}">{{ url.title }}</a>
 </div>
 <table>
     {% for text in texts %}
     <tr>
         <td>
-            <a href="/diff?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
+            <a href="{% url 'diff' %}?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
                 {{ text.prev_created_on|date:"Y-m-d H:i:s" }}
             </a>
         </td>
@@ -46,7 +46,7 @@
             ↷
         </td>
         <td>
-            <a href="/diff?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
+            <a href="{% url 'diff' %}?1={{ text.prev_text_hashed }}&2={{ text.text_hashed }}">
                 {{ text.created_on|date:"Y-m-d H:i:s" }}
             </a>
         </td>

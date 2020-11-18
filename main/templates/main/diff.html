@@ -36,7 +36,7 @@
 </style>
 {% endblock %}
 
-{% block h1 %}<a href="/view/?url={{ text2.url }}">Diff</a>{% endblock %}
+{% block h1 %}<a href="{% url 'view' %}?url={{ text2.url }}">Diff</a>{% endblock %}
 
 {% block content %}
 <div class="url">

@@ -3,6 +3,7 @@ import difflib
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
 from .forms import AddUrlForm
 from .models import PageText, PageUrl
@@ -50,7 +51,7 @@ def diff(request, tpl="main/diff.html"):
 def delete(request, tpl="main/del.html"):
     if request.method == "POST":
         PageUrl.objects.get(pk=request.POST["pk"]).delete()
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect(reverse("home"))
     return HttpResponseNotFound()
 
 
@@ -61,4 +62,4 @@ def add(request, tpl="main/add.html"):
         if form.is_valid():
             page_url = PageUrl(url=form.cleaned_data["url"])
             page_url.save()
-    return HttpResponseRedirect("/")
+    return HttpResponseRedirect(reverse("home"))
