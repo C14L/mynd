@@ -85,7 +85,7 @@
         {% for url in urls %}
         <tr>
             <td>
-                <form action="/del/" method="post">
+                <form action="/del/" method="post" onsubmit="return confirm('Delete?')">
                     {% csrf_token %}
                     <input type="hidden" name="pk" value="{{ url.pk }}">
                     <input type="submit" value="delete">
