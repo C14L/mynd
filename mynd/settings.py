@@ -1,4 +1,5 @@
 import os
+from os.path import join
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "w_a$+9b-+jr9e0u_nmv!&srvxumjt8plxj^$l51k01_f_r$u!c"
@@ -76,9 +77,9 @@ USE_TZ = True
 
 URL_PREFIX = "mynd/"
 
-LOGIN_REDIRECT_URL = URL_PREFIX
-LOGOUT_REDIRECT_URL = URL_PREFIX
+LOGIN_REDIRECT_URL = join("/" + URL_PREFIX)
+LOGOUT_REDIRECT_URL = join("/" + URL_PREFIX)
 
-LOGIN_URL = URL_PREFIX + "user/login/"
+LOGIN_URL = join("/", URL_PREFIX, "login/")
 
-STATIC_URL = URL_PREFIX + "static/"
+STATIC_URL = join("/", URL_PREFIX, "static/")
