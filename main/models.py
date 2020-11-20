@@ -4,7 +4,7 @@ from main.ndparsers import ndutils
 
 
 class PageUrl(models.Model):
-    url = models.URLField(null=False, blank=False)
+    url = models.URLField(null=False, blank=False, unique=True)
     title = models.CharField(max_length=500, default="")
     author = models.CharField(max_length=500, default="")
     created_on = models.DateTimeField(auto_now_add=True)
